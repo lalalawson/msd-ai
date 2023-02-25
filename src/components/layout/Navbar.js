@@ -1,19 +1,25 @@
 import { Fragment } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "../../assets/MSD_logo.png";
 import ProfilePic from "../../assets/Julie.jpeg";
-
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Discover", href: "/article", current: false },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
+  const location = useLocation();
+  console.log(location);
+  const navigation = [
+    { name: "Home", href: "/", current: location.pathname === "/" },
+    {
+      name: "Discover",
+      href: "/article",
+      current: location.pathname === "/article",
+    },
+  ];
   return (
     <Disclosure as="nav" className="shadow-sm">
       {({ open }) => (
@@ -47,9 +53,9 @@ export default function Navbar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current
                             ? "text-teal-800 font-bold"
@@ -59,7 +65,7 @@ export default function Navbar() {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
