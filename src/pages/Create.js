@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Loading from "../components/page/Loading";
 
 function Create() {
+  let navigate = useNavigate();
   const [selectedType, setSelectedType] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   // const [value, setValue] = useState(null);
 
   const selectedButtonClassName =
@@ -18,6 +21,7 @@ function Create() {
       alert("Please fill in all the fields");
       return;
     }
+    setIsLoading(true);
 
     const getSummary = await fetch("http://localhost:3000/summarize", {
       method: "POST",
@@ -30,6 +34,7 @@ function Create() {
     });
     if (!getSummary.ok) {
       alert("Something went wrong in getting summary");
+      setIsLoading(false);
       return;
     }
     summary = await getSummary.json();
@@ -48,10 +53,13 @@ function Create() {
     });
     if (!response.ok) {
       alert("Something went wrong");
+      setIsLoading(false);
       return;
     }
     const data = await response.json();
+    setIsLoading(false);
     console.log(data);
+    navigate(`/article/${data.message.id}`);
   }
 
   function handleFileInputChange(event) {
@@ -247,6 +255,7 @@ function Create() {
           </div>
           {/* </form> */}
         </div>
+        {isLoading && <Loading />}
       </div>
     </section>
   );
