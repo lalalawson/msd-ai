@@ -13,7 +13,7 @@ function App() {
           {/* Routes that conform to layout */}
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="article" element={<Article />} />
+            <Route path="article/:id" element={<Article />} />
             <Route path="create" element={<Create />} />
           </Route>
         </Routes>
