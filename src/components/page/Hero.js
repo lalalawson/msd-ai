@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Hero() {
   return (
@@ -18,16 +19,13 @@ function Hero() {
           covered.
         </p>
         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-          <a
-            href="#"
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white bg-teal-700 rounded-lg border hover:bg-teal-600 hover:shadow-xl duration-300"
+          <Link
+            to="/create"
+            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white bg-teal-700 rounded-lg border hover:bg-teal-600 hover:shadow-xl duration-300 ease-in-out"
           >
             Create a summary
-          </a>
-          <a
-            href="#"
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-800 rounded-lg bg-primary hover:text-teal-700 hover:ring-2 hover:ring-teal-700 duration-300"
-          >
+          </Link>
+          <div className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-800 rounded-lg bg-primary hover:text-teal-700 hover:ring-2 hover:ring-teal-700 duration-300">
             Discover articles
             <svg
               className="ml-2 -mr-1 w-5 h-5"
@@ -41,7 +39,7 @@ function Hero() {
                 clip-rule="evenodd"
               ></path>
             </svg>
-          </a>
+          </div>
         </div>
       </div>
     </section>
