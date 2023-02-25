@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "../../assets/MSD_logo.png";
+import ProfilePic from "../../assets/Julie.jpeg";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -51,9 +52,9 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
+                            ? "text-teal-800 font-bold"
+                            : "text-gray-400  hover:text-black font-medium duration-300",
+                          "px-3 py-2 text-sm"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -67,13 +68,17 @@ export default function Navbar() {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-800">
+                    <Menu.Button className="flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-800">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                      <div className="flex items-center gap-2 px-2 py-1">
+                        <span className="text-gray-500">Julie Olszewski</span>
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          height="256"
+                          src={ProfilePic}
+                          alt="profilephoto"
+                        />
+                      </div>
                     </Menu.Button>
                   </div>
                   <Transition
