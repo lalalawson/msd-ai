@@ -1,10 +1,44 @@
 import React from "react";
+import Card from "./Card";
 
 function Community() {
+  const articles = [
+    {
+      title: "How to use Tailwind CSS with React",
+      author: "John Doe",
+      generator: "Tailwind CSS",
+      date: "2021-01-01",
+      tags: [
+        "React",
+        "Tailwind CSS",
+        "React",
+        "Tailwind CSS",
+        "React",
+        "Tailwind CSS",
+        "React",
+        "Tailwind CSS",
+      ],
+    },
+    {
+      title: "How to use Tailwind CSS with React",
+      author: "John Doe",
+      generator: "Tailwind CSS",
+      date: "2021-01-01",
+      tags: ["React", "Tailwind CSS"],
+    },
+    {
+      title: "How to use Tailwind CSS with React",
+      author: "John Doe",
+      generator: "Tailwind CSS",
+      date: "2021-01-01",
+      tags: ["React", "Tailwind CSS"],
+    },
+  ];
+
   return (
-    <section className="bg-white">
+    <section className="bg-white w-3/4 mx-auto max-w-screen-xl mb-20">
       <div className="h-0.5 w-3/4 bg-gray-100 mx-auto max-w-screen-xl"></div>
-      <div className="py-8 px-4 mx-auto max-w-screen-xl text-left lg:py-16 lg:px-12 flex items-center gap-2">
+      <div className="py-8 px-4 mx-auto text-left lg:py-12 lg:px-4 flex items-center gap-2">
         {/* add a star icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +55,15 @@ function Community() {
         <h2 className="text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-5xl">
           Our Community
         </h2>
-        <div>{/* TODO: ADD LIST OF ARTICLES HERE */}</div>
+      </div>
+      <div className="px-4 grid grid-cols-2 gap-4">
+        {articles.map((article) => {
+          return (
+            <>
+              <Card info={article} />
+            </>
+          );
+        })}
       </div>
     </section>
   );

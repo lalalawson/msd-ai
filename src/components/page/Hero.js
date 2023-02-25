@@ -25,7 +25,10 @@ function Hero() {
           >
             Create a summary
           </Link>
-          <div className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-800 rounded-lg bg-primary hover:text-teal-700 hover:ring-2 hover:ring-teal-700 duration-300">
+          <Link
+            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-800 rounded-lg bg-primary hover:text-teal-700 hover:ring-2 hover:ring-teal-700 duration-300"
+            to="/discover"
+          >
             Discover articles
             <svg
               className="ml-2 -mr-1 w-5 h-5"
@@ -39,7 +42,7 @@ function Hero() {
                 clip-rule="evenodd"
               ></path>
             </svg>
-          </div>
+          </Link>
         </div>
       </div>
     </section>
