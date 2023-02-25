@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/page/Loading";
 
 function Create() {
+  let navigate = useNavigate();
   const [selectedType, setSelectedType] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   // const [value, setValue] = useState(null);
@@ -58,6 +59,7 @@ function Create() {
     const data = await response.json();
     setIsLoading(false);
     console.log(data);
+    navigate(`/article/${data.message.id}`);
   }
 
   function handleFileInputChange(event) {
