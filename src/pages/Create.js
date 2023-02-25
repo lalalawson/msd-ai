@@ -52,6 +52,24 @@ function Create() {
     }
     const data = await response.json();
     console.log(data);
+
+    // Add in tags, wikilinks
+    //  const addInData = await fetch("http://localhost:4500/api/addin-helper", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     entityLinking: summary.entityLinking,
+    //     namedEntites: summary.namedEntites
+    //   }),
+    // });
+    // if (!addInData.ok) {
+    //   alert("Something went wrong in adding in tags and links");
+    //   return;
+    // }
+    // const dataTwo = await response.json();
+    // console.log(dataTwo);
   }
 
   function handleFileInputChange(event) {

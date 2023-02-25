@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-function ChatBox() {
+function ChatBox({ content, id }) {
+  const [answer, setAnswer] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [question, setQuestion] = useState("");
 
@@ -17,17 +18,75 @@ function ChatBox() {
     setQuestion(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission here
     console.log(`Submitted question: ${question}`);
     // Reset the question state after submission
     setQuestion("");
+    setQna({
+      question: question,
+      answer: "...",
+    });
+    await questionAnswer();
   };
 
   const toggleChatBox = () => {
     setIsOpen(!isOpen);
   };
+
+  // Send question to backend
+  async function questionAnswer() {
+    const response = await fetch(
+      "https://ntu-hackathon.cognitiveservices.azure.com/language/:query-text?api-version=2021-10-01",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": "ce91393f4d6e4710a26b710142e60ec6",
+        },
+        body: JSON.stringify({
+          question,
+          records: [
+            {
+              id: "1",
+              text: content,
+            },
+          ],
+        }),
+      }
+    );
+    if (!response.ok) {
+      alert("Something went wrong");
+      console.log(response);
+      return;
+    }
+    const data = await response.json();
+    setAnswer(data.answers[0].answer);
+    setQna({
+      question: question,
+      answer: data.answers[0].answer,
+    });
+    console.log(data);
+  }
+  async function addToInsights() {
+    const response = await fetch("http://localhost:4500/api/add-insights", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        insight: answer,
+        reportId: id,
+      }),
+    });
+    if (!response.ok) {
+      alert("Something went wrong");
+      return;
+    }
+    const data = await response.json();
+    console.log(data);
+  }
 
   return (
     <div style={{ minWidth: "1px" }}>
@@ -68,7 +127,9 @@ function ChatBox() {
                     className="rounded-full bg-white drop-shadow-sm w-fit ring-1 ring-teal-600 py-1 px-3 mt-2
                     text-xs text-gray-800
                    hover:bg-teal-700 hover:text-white duration-300 hover:cursor-pointer"
-                    onClick={() => {}}
+                    onClick={() => {
+                      addToInsights();
+                    }}
                   >
                     Find this useful? Click here to save to Key Insights!
                   </div>
