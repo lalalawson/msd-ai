@@ -16,8 +16,8 @@ export default function Navbar() {
     { name: "Home", href: "/", current: location.pathname === "/" },
     {
       name: "Discover",
-      href: "/article",
-      current: location.pathname === "/article",
+      href: "/discover",
+      current: location.pathname === "/discover",
     },
   ];
   return (
