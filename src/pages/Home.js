@@ -1,10 +1,12 @@
 import React from "react";
-import Hero from "../components/Hero";
+import Community from "../components/page/Community";
+import Hero from "../components/page/Hero";
 
 function Home() {
   return (
     <div>
       <Hero />
+      <Community />
     </div>
   );
 }
