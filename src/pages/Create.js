@@ -78,10 +78,12 @@ function Create() {
     });
     if (!addInData.ok) {
       alert("Something went wrong in adding in tags and links");
+      setIsLoading(false);
       return;
     }
     const dataTwo = await addInData.json();
     console.log(dataTwo);
+    navigate(`/article/${id}`);
   }
 
   function handleFileInputChange(event) {
