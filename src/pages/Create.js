@@ -61,7 +61,6 @@ function Create() {
     }
     const data = await response.json();
     id = data.message.id;
-    setIsLoading(false);
     console.log(data);
 
     // Add in data to wikipedia links and tags model
