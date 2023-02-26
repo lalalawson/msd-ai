@@ -58,48 +58,6 @@ function Article() {
   const { id } = useParams();
   const [ai, setAI] = useState("");
   const [article, setArticle] = useState("");
-  // Get article from backend using id
-  // async function getArticle() {
-  //   const response = await fetch("http://localhost:4500/api/get-report", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       id: parseInt(id),
-  //     }),
-  //   });
-  //   if (!response.ok) {
-  //     alert("Something went wrong");
-  //     return;
-  //   }
-  //   const data = await response.json();
-  //   setArticle(data);
-  //   console.log(data);
-
-  //   // Call GetInsights
-  //   getInsights(data.message.content);
-  // }
-
-  // // Get insights from backend using id
-  // async function getInsights(content) {
-  //   const response = await fetch("http://localhost:3000/summarize", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       documents: [content],
-  //     }),
-  //   });
-  //   if (!response.ok) {
-  //     alert("Something went wrong");
-  //     return;
-  //   }
-  //   const data = await response.json();
-  //   setAI(data);
-  //   console.log(data);
-  // }
 
   async function getArticle() {
     const response = await fetch("http://localhost:4500/api/get-report", {
