@@ -1,40 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./Card";
-
-function Community() {
-  const articles = [
-    {
-      title: "How to use Tailwind CSS with React",
-      author: "John Doe",
-      generator: "Tailwind CSS",
-      date: "2021-01-01",
-      tags: [
-        "React",
-        "Tailwind CSS",
-        "React",
-        "Tailwind CSS",
-        "React",
-        "Tailwind CSS",
-        "React",
-        "Tailwind CSS",
-      ],
-    },
-    {
-      title: "How to use Tailwind CSS with React",
-      author: "John Doe",
-      generator: "Tailwind CSS",
-      date: "2021-01-01",
-      tags: ["React", "Tailwind CSS"],
-    },
-    {
-      title: "How to use Tailwind CSS with React",
-      author: "John Doe",
-      generator: "Tailwind CSS",
-      date: "2021-01-01",
-      tags: ["React", "Tailwind CSS"],
-    },
-  ];
-
+import { useNavigate } from "react-router-dom";
+function Community({ articles }) {
+  let navigate = useNavigate();
+  console.log("articles", articles);
   return (
     <section className="bg-white w-3/4 mx-auto max-w-screen-xl mb-20">
       <div className="h-0.5 w-3/4 bg-gray-100 mx-auto max-w-screen-xl"></div>
@@ -60,7 +29,9 @@ function Community() {
         {articles.map((article) => {
           return (
             <>
-              <Card info={article} />
+              <div onClick={() => navigate("/article/" + article.id)}>
+                <Card info={article} />
+              </div>
             </>
           );
         })}
