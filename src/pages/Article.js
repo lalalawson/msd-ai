@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ChatBox from "../components/page/Chatbox";
+import Loading from "../components/page/Loading";
 
 function Article() {
   const artObj = {
     title:
       "Research Article 1 - The Effect of COVID19 on the Economy and Society in the United States",
-    author: "Krishna K.",
+    author: "Adrienne Groman, Martin Srtunga",
     summary:
       "This is the summary of article 1 and it is supposed to be relatively long. " +
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
@@ -17,7 +18,7 @@ function Article() {
       "Nam eros sapien, rutrum a ultrices eget, facilisis quis libero. Nullam molestie mauris eu massa gravida porta. " +
       "Cras suscipit vestibulum dolor. Donec blandit ultrices nisl nec rhoncus. Proin posuere ultricies tempus. " +
       "Ut ac enim consequat, lacinia tortor quis, sodales orci.",
-    generator: "Lawson T.",
+    generator: "Julie Olszewski",
     dateCreated: "2021-01-01",
   };
 
@@ -58,6 +59,8 @@ function Article() {
   const { id } = useParams();
   const [ai, setAI] = useState("");
   const [article, setArticle] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [insights, setInsights] = useState([]);
   // Get article from backend using id
   // async function getArticle() {
   //   const response = await fetch("http://localhost:4500/api/get-report", {
@@ -117,6 +120,7 @@ function Article() {
     }
     const data = await response.json();
     setArticle(data);
+    setInsights(data.message.insights);
     console.log(data);
   }
 
@@ -133,6 +137,11 @@ function Article() {
       </div>
     );
   };
+
+  const updateInsight = (insightObj) => {
+    setInsights([...insights, insightObj]);
+  };
+
   const tag = (name) => {
     return (
       <div className="rounded-full bg-white drop-shadow-sm ring-1 ring-teal-600 py-1 px-3">
@@ -226,8 +235,11 @@ function Article() {
                 Key Insights
               </h1>
               <div className="grid grid-cols-1 gap-4">
-                {insightsList.map((insight) => {
-                  return insightCard(insight.question, insight.answer);
+                {insights.map((insight) => {
+                  return insightCard(
+                    "insight.question",
+                    insight.insight.substring(0, 300) + "..."
+                  );
                 })}
               </div>
             </div>
@@ -235,12 +247,16 @@ function Article() {
         </div>
 
         <div>
-          <ChatBox content={article.message.content} id={article.message.id} />
+          <ChatBox
+            content={article.message.content}
+            id={article.message.id}
+            updateInsight={updateInsight}
+          />
         </div>
       </>
     );
   } else {
-    <div>Loadind...</div>;
+    <Loading />;
   }
 }
 
