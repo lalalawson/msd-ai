@@ -57,9 +57,29 @@ function Create() {
       return;
     }
     const data = await response.json();
-    setIsLoading(false);
+    id = data.message.id;
     console.log(data);
-    navigate(`/article/${data.message.id}`);
+
+    // Add in data to wikipedia links and tags model
+    const addInData = await fetch("http://localhost:4500/api/addin-helper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        entityLinking: summary.entityLinking,
+        namedEntites: summary.namedEntites,
+        id,
+      }),
+    });
+    if (!addInData.ok) {
+      alert("Something went wrong in adding in tags and links");
+      setIsLoading(false);
+      return;
+    }
+    const dataTwo = await addInData.json();
+    console.log(dataTwo);
+    navigate(`/article/${id}`);
   }
 
   function handleFileInputChange(event) {
