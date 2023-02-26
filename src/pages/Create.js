@@ -15,6 +15,7 @@ function Create() {
     "rounded-full bg-white text-xs px-3 py-1 ring-1 ring-gray-300 hover:ring-teal-700 duration-300";
   async function createReport() {
     var summary = "";
+    var id = "";
     const title = document.getElementById("title").value;
     const rawText = document.getElementById("raw-text").value;
     if (!title || !rawText) {
@@ -23,6 +24,7 @@ function Create() {
     }
     setIsLoading(true);
 
+    // Get summary from user input
     const getSummary = await fetch("http://localhost:3000/summarize", {
       method: "POST",
       headers: {
@@ -40,6 +42,7 @@ function Create() {
     summary = await getSummary.json();
     console.log(summary);
 
+    // Create a new report after getting summary
     const response = await fetch("http://localhost:4500/api/create", {
       method: "POST",
       headers: {
@@ -57,26 +60,28 @@ function Create() {
       return;
     }
     const data = await response.json();
+    id = data.message.id;
     setIsLoading(false);
     console.log(data);
 
-    // Add in tags, wikilinks
-    //  const addInData = await fetch("http://localhost:4500/api/addin-helper", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     entityLinking: summary.entityLinking,
-    //     namedEntites: summary.namedEntites
-    //   }),
-    // });
-    // if (!addInData.ok) {
-    //   alert("Something went wrong in adding in tags and links");
-    //   return;
-    // }
-    // const dataTwo = await response.json();
-    // console.log(dataTwo);
+    // Add in data to wikipedia links and tags model
+    const addInData = await fetch("http://localhost:4500/api/addin-helper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        entityLinking: summary.entityLinking,
+        namedEntites: summary.namedEntites,
+        id,
+      }),
+    });
+    if (!addInData.ok) {
+      alert("Something went wrong in adding in tags and links");
+      return;
+    }
+    const dataTwo = await addInData.json();
+    console.log(dataTwo);
   }
 
   function handleFileInputChange(event) {

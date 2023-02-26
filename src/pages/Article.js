@@ -59,6 +59,48 @@ function Article() {
   const [ai, setAI] = useState("");
   const [article, setArticle] = useState("");
   // Get article from backend using id
+  // async function getArticle() {
+  //   const response = await fetch("http://localhost:4500/api/get-report", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       id: parseInt(id),
+  //     }),
+  //   });
+  //   if (!response.ok) {
+  //     alert("Something went wrong");
+  //     return;
+  //   }
+  //   const data = await response.json();
+  //   setArticle(data);
+  //   console.log(data);
+
+  //   // Call GetInsights
+  //   getInsights(data.message.content);
+  // }
+
+  // // Get insights from backend using id
+  // async function getInsights(content) {
+  //   const response = await fetch("http://localhost:3000/summarize", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       documents: [content],
+  //     }),
+  //   });
+  //   if (!response.ok) {
+  //     alert("Something went wrong");
+  //     return;
+  //   }
+  //   const data = await response.json();
+  //   setAI(data);
+  //   console.log(data);
+  // }
+
   async function getArticle() {
     const response = await fetch("http://localhost:4500/api/get-report", {
       method: "POST",
@@ -76,33 +118,11 @@ function Article() {
     const data = await response.json();
     setArticle(data);
     console.log(data);
-
-    // Call GetInsights
-    getInsights(data.message.content);
-  }
-
-  // Get insights from backend using id
-  async function getInsights(content) {
-    const response = await fetch("http://localhost:3000/summarize", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        documents: [content],
-      }),
-    });
-    if (!response.ok) {
-      alert("Something went wrong");
-      return;
-    }
-    const data = await response.json();
-    setAI(data);
-    console.log(data);
   }
 
   useEffect(() => {
     getArticle();
+    console.log("----test", article);
   }, []);
 
   const insightCard = (question, answer) => {
@@ -120,8 +140,9 @@ function Article() {
       </div>
     );
   };
-  if (ai.summary) {
-    console.log(ai.summary);
+
+  if (article.message) {
+    console.log(article.message.summary);
     return (
       <>
         <div className="w-4/5 bg-white mx-auto max-w-screen-xl mt-8 grid grid-cols-3 gap-8">
@@ -129,18 +150,18 @@ function Article() {
           <div className="col-span-3 md:col-span-2 pr-4">
             <div className="mb-8">
               <h1 className="mb-3 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-4xl">
-                {article?.message?.title}
+                {article.message.title}
               </h1>
               <div className="h-1.5 w-1/2 rounded-md bg-teal-700" />
             </div>
             <div className="mb-8">
               <div className="flex flex-wrap gap-3">
-                {ai.namedEntites.slice(0, 8).map((entity, i) => {
-                  return tag(entity.text);
+                {article.message.tags.slice(0, 8).map((entity, i) => {
+                  return tag(entity.tag);
                 })}
               </div>
             </div>
-            <p className="mb-8">{ai.summary}</p>
+            <p className="mb-8">{article.message.summary}</p>
             <div className="">
               <div className="flex items-center gap-2">
                 <svg
@@ -161,11 +182,11 @@ function Article() {
                 </h3>
               </div>
               <div className="mt-3 mb-8 rounded-md w-100 bg-stone-100 drop-shadow-md py-3 px-3 flex flex-wrap gap-2 ring-1 ring-teal-600">
-                {ai.entityLinking.map((wikiLink, index) => {
+                {article.message.WikiLinks.map((wikiLink, index) => {
                   return (
                     <>
                       <a
-                        href={wikiLink.url}
+                        href={wikiLink.link}
                         target="_blank"
                         className="hover:text-teal-800 hover:underline duration-300"
                       >
