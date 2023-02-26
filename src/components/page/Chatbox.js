@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 
-function ChatBox({ content, id }) {
+function ChatBox({ content, id, updateInsight }) {
   const [answer, setAnswer] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [question, setQuestion] = useState("");
+  const [saved, setSaved] = useState(false);
 
   const qnaObj = {
-    question: "What is the difference between a virus and a bacterium?",
-    answer:
-      "A virus is a non-cellular infectious agent that replicates only inside the living cells of an organism. A bacterium is a single-celled microorganism that has cell walls with peptidoglycan." +
-      "A virus is a non-cellular infectious agent that replicates only inside the living cells of an organism. A bacterium is a single-celled microorganism that has cell walls with peptidoglycan.",
+    question: null,
+    answer: null,
   };
 
   const [qna, setQna] = useState(qnaObj);
@@ -22,13 +21,14 @@ function ChatBox({ content, id }) {
     event.preventDefault();
     // Handle form submission here
     console.log(`Submitted question: ${question}`);
+    setSaved(false);
     // Reset the question state after submission
-    setQuestion("");
     setQna({
       question: question,
       answer: "...",
     });
-    await questionAnswer();
+    await questionAnswer(question);
+    setQuestion("");
   };
 
   const toggleChatBox = () => {
@@ -36,7 +36,7 @@ function ChatBox({ content, id }) {
   };
 
   // Send question to backend
-  async function questionAnswer() {
+  async function questionAnswer(question) {
     const response = await fetch(
       "https://ntu-hackathon.cognitiveservices.azure.com/language/:query-text?api-version=2021-10-01",
       {
@@ -68,6 +68,7 @@ function ChatBox({ content, id }) {
       answer: data.answers[0].answer,
     });
     console.log(data);
+    console.log(data.answers[0].answer);
   }
   async function addToInsights() {
     const response = await fetch("http://localhost:4500/api/add-insights", {
@@ -86,6 +87,8 @@ function ChatBox({ content, id }) {
     }
     const data = await response.json();
     console.log(data);
+    updateInsight(data.message);
+    setSaved(true);
   }
 
   return (
@@ -112,29 +115,66 @@ function ChatBox({ content, id }) {
           <div>
             {/* Add your chat box here */}
             <div className="mb-4 p-4 overflow-auto h-40">
-              <div>
-                <div className="text-sm font-bold text-gray-900">You</div>
-                <div className="mt-1 text-sm text-gray-700">
-                  <p>{qna.question}</p>
-                </div>
-              </div>
-              <div className="h-0.5 w-100 bg-gray-100 my-2" />
-              <div>
-                <div className="text-sm font-bold text-gray-900">MerckBot</div>
-                <div className="mt-1 text-sm text-gray-700">
-                  <p>{qna.answer}</p>
-                  <div
-                    className="rounded-full bg-white drop-shadow-sm w-fit ring-1 ring-teal-600 py-1 px-3 mt-2
-                    text-xs text-gray-800
-                   hover:bg-teal-700 hover:text-white duration-300 hover:cursor-pointer"
-                    onClick={() => {
-                      addToInsights();
-                    }}
-                  >
-                    Find this useful? Click here to save to Key Insights!
+              {qna.question && (
+                <div>
+                  <div className="text-sm font-bold text-gray-900">You</div>
+                  <div className="mt-1 text-sm text-gray-700">
+                    <p>{qna.question}</p>
                   </div>
                 </div>
-              </div>
+              )}
+              {qna.answer && <div className="h-0.5 w-100 bg-gray-100 my-2" />}
+              {qna.answer && (
+                <div>
+                  <div className="text-sm font-bold text-gray-900">
+                    MerckBot
+                  </div>
+                  <div className="mt-1 text-sm text-gray-700">
+                    <p>{qna.answer}</p>
+                    {!saved && (
+                      <div
+                        className="rounded-full bg-white drop-shadow-sm w-fit ring-1 ring-teal-600 py-1 px-3 mt-2
+                      text-xs text-gray-800
+                      hover:bg-teal-700 hover:text-white duration-300 hover:cursor-pointer"
+                        onClick={() => {
+                          addToInsights();
+                        }}
+                      >
+                        Find this useful? Click here to save to Key Insights!
+                      </div>
+                    )}
+                    {saved && (
+                      <div
+                        className="rounded-full bg-teal-700 drop-shadow-sm w-fit ring-1 ring-teal-100 py-1 px-3 mt-2
+                      text-xs text-white duration-300"
+                      >
+                        Saved!
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              {!qna.question && (
+                <div className="text-center text-gray-500 mt-5">
+                  <div className="flex items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-10 h-10"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"
+                      />
+                    </svg>
+                  </div>
+                  <div>There is nothing here yet.</div>
+                </div>
+              )}
             </div>
             <div>
               <form onSubmit={handleSubmit} className="flex items-center">

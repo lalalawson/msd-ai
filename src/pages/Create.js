@@ -60,7 +60,6 @@ function Create() {
     }
     const data = await response.json();
     id = data.message.id;
-    setIsLoading(false);
     console.log(data);
 
     // Add in data to wikipedia links and tags model
@@ -77,10 +76,12 @@ function Create() {
     });
     if (!addInData.ok) {
       alert("Something went wrong in adding in tags and links");
+      setIsLoading(false);
       return;
     }
     const dataTwo = await addInData.json();
     console.log(dataTwo);
+    navigate(`/article/${id}`);
   }
 
   function handleFileInputChange(event) {
