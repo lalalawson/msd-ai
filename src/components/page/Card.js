@@ -1,9 +1,12 @@
 import React from "react";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 function Card({ info }) {
+  let navigate = useNavigate();
   return (
     <div
+      onClick={() => navigate("/article/" + info.id)}
       className=" bg-white rounded-lg drop-shadow-[0_0_6px_rgba(0,0,0,0.10)] px-4 py-4 flex flex-col
       w-100 hover:text-teal-700
       hover: border-b-8 border-white hover:border-teal-700 duration-500 ease-in-out cursor-pointer"

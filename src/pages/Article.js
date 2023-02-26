@@ -195,7 +195,7 @@ function Article() {
               <div className="grid grid-cols-1 gap-4">
                 {insights.map((insight) => {
                   return insightCard(
-                    "insight.question",
+                    "MerckBot:",
                     insight.insight.substring(0, 300) + "..."
                   );
                 })}

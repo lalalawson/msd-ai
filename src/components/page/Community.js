@@ -29,9 +29,7 @@ function Community({ articles }) {
         {articles.map((article) => {
           return (
             <>
-              <div onClick={() => navigate("/article/" + article.id)}>
-                <Card info={article} />
-              </div>
+              <Card info={article} />
             </>
           );
         })}
